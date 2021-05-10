@@ -1,12 +1,27 @@
 import typer
 
+from . import add, case
+
 app = typer.Typer()
+
+commands = [add, case]
+
+for command in commands:
+    app.add_typer(
+        command.app, name=command.__name__.split(".")[-1], help=command.__doc__
+    )
+
+
+@app.command()
+def remove():
+    print("Calling remove command...")
 
 
 @app.command()
 def rename():
-    print("Renaming files...")
+    print("Calling rename command...")
 
 
-if __name__ == "__main__":
-    app()
+@app.command()
+def substitute():
+    print("Calling substitute command...")
