@@ -2,8 +2,12 @@
 name = "bulk-renamer"
 version = "0.1.0"
 description = "A simple CLI to rename files"
-authors = ["Filipe <filipediascontato@gmail.com>"]
+authors = ["Filipe Dias <filipediascontato@gmail.com>"]
 license = "MIT"
+readme = "README.md"
+
+[tool.poetry.scripts]
+br = "bulk_renamer.cli.main:app"
 
 [tool.poetry.dependencies]
 python = "^3.8"
