@@ -2,6 +2,8 @@ import typer
 
 from ..utils.functions import get_cwd_file_paths, rename_file
 
+"""Adds a string in the name case based on the subcommands."""
+
 app = typer.Typer()
 
 
