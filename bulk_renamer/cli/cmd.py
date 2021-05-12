@@ -18,7 +18,16 @@ def rename() -> None:
 
 
 @app.command()
-def replace(old_value=typer.Argument(...), new_value=typer.Argument(...)) -> None:
+def replace(
+    old_value: str = typer.Argument(..., help="The string to shearch for"),
+    new_value: str = typer.Argument(
+        ..., help="The string to replace the old value with"
+    ),
+) -> None:
+    """
+    Replaces a specified string in the file name with another specified string.
+    """
+
     files_path = functions.get_all_files_in_cwd()
 
     for file in files_path:
