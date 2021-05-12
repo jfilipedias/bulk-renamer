@@ -18,5 +18,4 @@ for command in commands:
     )
 
 app.command()(cmd.remove)
-app.command()(cmd.rename)
 app.command()(cmd.replace)
