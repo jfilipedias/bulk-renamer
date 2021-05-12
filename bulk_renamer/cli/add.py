@@ -1,6 +1,6 @@
 import typer
 
-from .utils.functions import get_cwd_file_paths, rename_file
+from ..utils.functions import get_cwd_file_paths, rename_file
 
 app = typer.Typer()
 
