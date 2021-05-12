@@ -8,8 +8,27 @@ app = typer.Typer()
 
 
 @app.command()
-def remove() -> None:
-    print("Calling remove command...")
+def remove(
+    value: str = typer.Argument(..., help="The string to remove from file name")
+) -> None:
+    """
+    Remove a specified string from the file name.
+    """
+
+    files_path = functions.get_all_files_in_cwd()
+
+    for file in files_path:
+        file_name = file.stem
+
+        if not file_name:
+            continue
+
+        extension = file.suffix
+
+        file_name = file_name.replace(value, "")
+        file_name = f"{file_name}{extension}"
+
+        file.rename(Path(file.parent, file_name))
 
 
 @app.command()
