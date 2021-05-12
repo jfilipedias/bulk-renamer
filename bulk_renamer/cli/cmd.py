@@ -9,48 +9,46 @@ app = typer.Typer()
 
 @app.command()
 def remove(
-    value: str = typer.Argument(..., help="The string to remove from file name")
+    value: str = typer.Argument(..., help="The string to remove from filename.")
 ) -> None:
-    """Remove a specified string from the file name."""
+    """Remove a specified string from the filename."""
 
     files_path = functions.get_all_files_in_cwd()
 
     for file in files_path:
-        file_name = file.stem
+        filename = file.stem
 
-        if not file_name:
+        if not filename:
             continue
 
         extension = file.suffix
 
-        file_name = file_name.replace(value, "")
-        file_name = f"{file_name}{extension}"
+        filename = filename.replace(value, "")
+        filename = f"{filename}{extension}"
 
-        file.rename(Path(file.parent, file_name))
+        file.rename(Path(file.parent, filename))
 
 
 @app.command()
 def replace(
-    old_value: str = typer.Argument(..., help="The string to shearch for"),
+    old_value: str = typer.Argument(..., help="The string to shearch for."),
     new_value: str = typer.Argument(
-        ..., help="The string to replace the old value with"
+        ..., help="The string to replace the old value with."
     ),
 ) -> None:
-    """Replaces a specified string in the file name with another specified
-    string.
-    """
+    """Replaces a specified string in the filename with another specified string."""
 
     files_path = functions.get_all_files_in_cwd()
 
     for file in files_path:
-        file_name = file.stem
+        filename = file.stem
 
-        if not file_name:
+        if not filename:
             continue
 
         extension = file.suffix
 
-        file_name = file_name.replace(old_value, new_value)
-        file_name = f"{file_name}{extension}"
+        filename = filename.replace(old_value, new_value)
+        filename = f"{filename}{extension}"
 
-        file.rename(Path(file.parent, file_name))
+        file.rename(Path(file.parent, filename))
