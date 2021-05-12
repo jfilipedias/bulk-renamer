@@ -1,6 +1,6 @@
 import typer
 
-from . import add, case
+from . import add, case, cmd
 
 app = typer.Typer()
 
@@ -11,17 +11,6 @@ for command in commands:
         command.app, name=command.__name__.split(".")[-1], help=command.__doc__
     )
 
-
-@app.command()
-def remove():
-    print("Calling remove command...")
-
-
-@app.command()
-def rename():
-    print("Calling rename command...")
-
-
-@app.command()
-def substitute():
-    print("Calling substitute command...")
+app.command()(cmd.remove)
+app.command()(cmd.rename)
+app.command()(cmd.replace)
