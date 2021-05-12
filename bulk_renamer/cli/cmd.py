@@ -1,8 +1,6 @@
-from pathlib import Path
-
 import typer
 
-from .utils import functions
+from .utils.functions import get_cwd_file_paths, rename_file
 
 app = typer.Typer()
 
@@ -13,20 +11,19 @@ def remove(
 ) -> None:
     """Remove a specified string from the filename."""
 
-    files_path = functions.get_all_files_in_cwd()
+    paths = get_cwd_file_paths()
 
-    for file in files_path:
-        filename = file.stem
+    for path in paths:
+        name = paths.stem
+        extension = path.suffix
 
-        if not filename:
+        if not name:
             continue
 
-        extension = file.suffix
+        name = name.replace(value, "")
+        filename = f"{name}{extension}"
 
-        filename = filename.replace(value, "")
-        filename = f"{filename}{extension}"
-
-        file.rename(Path(file.parent, filename))
+        rename_file(path, filename)
 
 
 @app.command()
@@ -38,17 +35,16 @@ def replace(
 ) -> None:
     """Replaces a specified string in the filename with another specified string."""
 
-    files_path = functions.get_all_files_in_cwd()
+    paths = get_cwd_file_paths()
 
-    for file in files_path:
-        filename = file.stem
+    for path in paths:
+        name = path.stem
 
-        if not filename:
+        if not name:
             continue
 
-        extension = file.suffix
+        extension = path.suffix
+        name = name.replace(old_value, new_value)
+        filename = f"{name}{extension}"
 
-        filename = filename.replace(old_value, new_value)
-        filename = f"{filename}{extension}"
-
-        file.rename(Path(file.parent, filename))
+        rename_file(path, filename)

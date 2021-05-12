@@ -1,8 +1,6 @@
-from pathlib import Path
-
 import typer
 
-from .utils import functions
+from .utils.functions import get_cwd_file_paths, rename_file
 
 app = typer.Typer()
 
@@ -32,17 +30,16 @@ def suffix(
 def add_string_to_filename(value: str, is_suffix: bool = True) -> None:
     """Adds a prefix or a suffix to a filename."""
 
-    files_path = functions.get_all_files_in_cwd()
+    paths = get_cwd_file_paths()
 
-    for file in files_path:
-        filename = file.stem
+    for path in paths:
+        name = path.stem
+        extension = path.suffix
 
-        if not filename:
+        if not name:
             continue
 
-        extension = file.suffix
+        name = f"{name}{value}" if is_suffix else f"{value}{name}"
+        filename = f"{name}{extension}"
 
-        filename = f"{filename}{value}" if is_suffix else f"{value}{filename}"
-        filename = f"{filename}{extension}"
-
-        file.rename(Path(file.parent, filename))
+        rename_file(path, filename)
