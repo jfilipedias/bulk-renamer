@@ -11,9 +11,7 @@ app = typer.Typer()
 def remove(
     value: str = typer.Argument(..., help="The string to remove from file name")
 ) -> None:
-    """
-    Remove a specified string from the file name.
-    """
+    """Remove a specified string from the file name."""
 
     files_path = functions.get_all_files_in_cwd()
 
@@ -32,19 +30,14 @@ def remove(
 
 
 @app.command()
-def rename() -> None:
-    print("Calling rename command...")
-
-
-@app.command()
 def replace(
     old_value: str = typer.Argument(..., help="The string to shearch for"),
     new_value: str = typer.Argument(
         ..., help="The string to replace the old value with"
     ),
 ) -> None:
-    """
-    Replaces a specified string in the file name with another specified string.
+    """Replaces a specified string in the file name with another specified
+    string.
     """
 
     files_path = functions.get_all_files_in_cwd()
