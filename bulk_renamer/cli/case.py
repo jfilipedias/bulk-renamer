@@ -4,9 +4,10 @@ import typer
 
 from ..utils.functions import get_cwd_file_paths, rename_file
 
-"""Formats filename chars case based on the subcommands."""
 
 app = typer.Typer()
+
+__doc__ = """Formats filename chars case based on the subcommands."""
 
 
 @app.command()

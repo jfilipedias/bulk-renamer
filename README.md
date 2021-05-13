@@ -18,12 +18,14 @@ $ br [OPTIONS] COMMAND [ARGS]...
 
 **Commands**:
 
-* `add`
-* `case`
+* `add`: Adds a string in the name case based on the...
+* `case`: Formats filename chars case based on the...
 * `remove`: Remove a specified string from the filename.
 * `replace`: Replaces a specified string in the filename...
 
 ## `br add`
+
+Adds a string in the name case based on the subcommands.
 
 **Usage**:
 
@@ -77,6 +79,8 @@ $ br add suffix [OPTIONS] VALUE
 * `--help`: Show this message and exit.
 
 ## `br case`
+
+Formats filename chars case based on the subcommands.
 
 **Usage**:
 

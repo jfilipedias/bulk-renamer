@@ -2,12 +2,12 @@ import typer
 
 from . import add, case, cmd
 
-BULK_RENAMER_HELP = """Bulk Renamer is a CLI to help you to easily rename a
+__doc__ = """Bulk Renamer is a CLI to help you to easily rename a
 list of files. You just need to run the commands from the folder that contains
 the files you want to rename.
 """
 
-app = typer.Typer(help=BULK_RENAMER_HELP)
+app = typer.Typer(help=__doc__)
 
 commands = [add, case]
 
