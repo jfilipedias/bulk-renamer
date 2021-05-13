@@ -1,4 +1,4 @@
-from pathlib import Path
+import re
 
 import typer
 
@@ -83,6 +83,30 @@ def lower() -> None:
 
 
 @app.command()
+def kebab(
+    upper: bool = typer.Option(
+        False, "--upper", "-u", help="Set all characters to uppercase."
+    )
+) -> None:
+    """Format the filename to kebab case convention."""
+
+    paths = get_cwd_file_paths()
+
+    for path in paths:
+        name = path.stem
+        extension = path.suffix
+
+        if not name:
+            continue
+
+        name = name.upper() if upper else name.lower()
+        name = re.sub("[^0-9a-zA-Z]+", "-", name)
+        filename = f"{name}{extension}"
+
+        rename_file(path, filename)
+
+
+@app.command()
 def pascal(
     whitespace: bool = typer.Option(
         False, "--whitespace", "-w", help="Maintains the filename whitespaces."
@@ -129,7 +153,11 @@ def upper() -> None:
 
 
 @app.command()
-def snake() -> None:
+def snake(
+    upper: bool = typer.Option(
+        False, "--upper", "-u", help="Set all characters to uppercase."
+    )
+) -> None:
     """Format the filename to snake case convention."""
 
     paths = get_cwd_file_paths()
@@ -141,8 +169,8 @@ def snake() -> None:
         if not name:
             continue
 
-        name = name.lower()
-        name = name.replace(" ", "_")
+        name = name.upper() if upper else name.lower()
+        name = re.sub("[^0-9a-zA-Z]+", "_", name)
         filename = f"{name}{extension}"
 
         rename_file(path, filename)
