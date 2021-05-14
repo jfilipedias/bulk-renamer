@@ -2,23 +2,56 @@ from __future__ import annotations
 from pathlib import Path
 from os import path
 from random import randint
+from rich import box
+from rich.console import Console
+from rich.table import Table
+from typer import confirm
+
+
+console = Console()
 
 
 def get_cwd_file_paths() -> list[Path]:
     """Return a list of all file paths from the current working directory."""
 
-    cwd_path = Path.cwd()
-    glob = cwd_path.glob("*")
+    cwd = Path.cwd()
+    glob = cwd.glob("*")
     files = filter(lambda x: x.is_file(), glob)
 
     return files
 
 
-def rename_file(file_path: Path, new_filename: str) -> None:
-    """Rename a file of a give path."""
+def rename_files(old_filenames: list[str], new_filenames: list[str]) -> None:
+    """Rename a list of files from current working directory."""
 
-    extension = path.splitext(new_filename)[1]
-    temp_name = f"tempfile_{randint(1000, 9999)}{extension}"
+    if len(old_filenames) != len(new_filenames):
+        return
 
-    file_path = file_path.rename(Path(file_path.parent, temp_name))
-    file_path.rename(Path(file_path.parent, new_filename))
+    for i in range(len(old_filenames)):
+        extension = path.splitext(old_filenames[i])[1]
+        temp_name = f"tempfile_{randint(1000, 9999)}{extension}"
+
+        file_path = Path(old_filenames[i])
+        file_path = file_path.rename(Path(temp_name))
+        file_path.rename(Path(new_filenames[i]))
+
+
+def show_changes(old_filenames: list[str], new_filenames: list[str]) -> None:
+    """Show a table with the filenames diffs"""
+
+    table = Table()
+    table.box = box.SIMPLE_HEAD
+
+    table.add_column("Current Names", header_style="bold blue", style="blue")
+    table.add_column("New Names", header_style="bold green", style="green")
+
+    table.add_row("\n".join(old_filenames), "\n".join(new_filenames))
+
+    console.print(table)
+
+
+def confirm_changes(old_filenames: list[str], new_filenames: list[str]) -> None:
+    show_changes(old_filenames, new_filenames)
+
+    if confirm("Are you sure you want to rename these files?", default=True):
+        rename_files(old_filenames, new_filenames)

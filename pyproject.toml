@@ -12,6 +12,7 @@ br = "bulk_renamer.cli.main:app"
 [tool.poetry.dependencies]
 python = "^3.8"
 typer = "^0.3.2"
+rich = "^10.2.0"
 
 [tool.poetry.dev-dependencies]
 pre-commit = "^2.12.1"

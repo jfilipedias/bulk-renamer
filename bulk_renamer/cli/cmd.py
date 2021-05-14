@@ -1,6 +1,6 @@
 import typer
 
-from ..utils.functions import get_cwd_file_paths, rename_file
+from bulk_renamer.utils.functions import get_cwd_file_paths, confirm_changes
 
 app = typer.Typer()
 
@@ -11,19 +11,22 @@ def remove(
 ) -> None:
     """Remove a specified string from the filename."""
 
-    paths = get_cwd_file_paths()
+    current_file_paths = get_cwd_file_paths()
+    current_filenames = []
+    new_filenames = []
 
-    for path in paths:
-        name = paths.stem
+    for path in current_file_paths:
+        name = path.stem
         extension = path.suffix
 
         if not name:
             continue
 
-        name = name.replace(value, "")
-        filename = f"{name}{extension}"
+        new_name = name.replace(value, "")
+        new_filenames.append(f"{new_name}{extension}")
+        current_filenames.append(f"{name}{extension}")
 
-        rename_file(path, filename)
+    confirm_changes(current_filenames, new_filenames)
 
 
 @app.command()
@@ -35,16 +38,19 @@ def replace(
 ) -> None:
     """Replaces a specified string in the filename with another specified string."""
 
-    paths = get_cwd_file_paths()
+    current_file_paths = get_cwd_file_paths()
+    current_filenames = []
+    new_filenames = []
 
-    for path in paths:
+    for path in current_file_paths:
         name = path.stem
+        extension = path.suffix
 
         if not name:
             continue
 
-        extension = path.suffix
-        name = name.replace(old_value, new_value)
-        filename = f"{name}{extension}"
+        new_name = name.replace(old_value, new_value)
+        new_filenames.append(f"{new_name}{extension}")
+        current_filenames.append(f"{name}{extension}")
 
-        rename_file(path, filename)
+    confirm_changes(current_filenames, new_filenames)
