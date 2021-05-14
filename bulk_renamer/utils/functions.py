@@ -5,7 +5,7 @@ from random import randint
 from rich import box
 from rich.console import Console
 from rich.table import Table
-from typer import confirm
+from typer import confirm, echo
 
 
 console = Console()
@@ -35,6 +35,8 @@ def rename_files(old_filenames: list[str], new_filenames: list[str]) -> None:
         file_path = file_path.rename(Path(temp_name))
         file_path.rename(Path(new_filenames[i]))
 
+    echo("All files have been renamed.")
+
 
 def show_changes(old_filenames: list[str], new_filenames: list[str]) -> None:
     """Show a table with the filenames diffs"""
@@ -42,10 +44,12 @@ def show_changes(old_filenames: list[str], new_filenames: list[str]) -> None:
     table = Table()
     table.box = box.SIMPLE_HEAD
 
-    table.add_column("Current Names", header_style="bold blue", style="blue")
+    table.add_column("Current Names", header_style="bold cyan", style="cyan")
+    table.add_column("")
     table.add_column("New Names", header_style="bold green", style="green")
 
-    table.add_row("\n".join(old_filenames), "\n".join(new_filenames))
+    arrows = [name.replace(name, "->") for name in old_filenames]
+    table.add_row("\n".join(old_filenames), "\n".join(arrows), "\n".join(new_filenames))
 
     console.print(table)
 

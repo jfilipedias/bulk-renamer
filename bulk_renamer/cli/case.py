@@ -2,7 +2,7 @@ import re
 
 import typer
 
-from ..utils.functions import get_cwd_file_paths, rename_file
+from ..utils.functions import get_cwd_file_paths, confirm_changes
 
 
 app = typer.Typer()
@@ -14,9 +14,11 @@ __doc__ = """Formats filename chars case based on the subcommands."""
 def alternate() -> None:
     """Alternate the name characters between upper and lowercase."""
 
-    paths = get_cwd_file_paths()
+    current_file_paths = get_cwd_file_paths()
+    current_filenames = []
+    new_filenames = []
 
-    for path in paths:
+    for path in current_file_paths:
         name = path.stem
         extension = path.suffix
 
@@ -30,9 +32,10 @@ def alternate() -> None:
             formated_name += char.upper() if upper else char.lower()
             upper = not upper
 
-        filename = f"{formated_name}{extension}"
+        new_filenames.append(f"{formated_name}{extension}")
+        current_filenames.append(f"{name}{extension}")
 
-        rename_file(path, filename)
+    confirm_changes(current_filenames, new_filenames)
 
 
 @app.command()
@@ -43,44 +46,50 @@ def camel(
 ) -> None:
     """Format the filename to camel case convention."""
 
-    paths = get_cwd_file_paths()
+    current_file_paths = get_cwd_file_paths()
+    current_filenames = []
+    new_filenames = []
 
-    for path in paths:
+    for path in current_file_paths:
         name = path.stem
         extension = path.suffix
 
         if not name:
             continue
 
-        name = name.lower()
-        name = name.title()
-        name = name[:1].lower() + name[1:]
+        new_name = name.lower()
+        new_name = new_name.title()
+        new_name = new_name[:1].lower() + new_name[1:]
 
         if not whitespace:
-            name = name.replace(" ", "")
+            new_name = re.sub("[^0-9a-zA-Z]+", "", new_name)
 
-        filename = f"{name}{extension}"
+        new_filenames.append(f"{new_name}{extension}")
+        current_filenames.append(f"{name}{extension}")
 
-        rename_file(path, filename)
+    confirm_changes(current_filenames, new_filenames)
 
 
 @app.command()
 def lower() -> None:
     """Set the filename to lowercase."""
 
-    paths = get_cwd_file_paths()
+    current_file_paths = get_cwd_file_paths()
+    current_filenames = []
+    new_filenames = []
 
-    for path in paths:
+    for path in current_file_paths:
         name = path.stem
         extension = path.suffix
 
         if not name:
             continue
 
-        name = name.lower()
-        filename = f"{name}{extension}"
+        new_name = name.lower()
+        new_filenames.append(f"{new_name}{extension}")
+        current_filenames.append(f"{name}{extension}")
 
-        rename_file(path, filename)
+    confirm_changes(current_filenames, new_filenames)
 
 
 @app.command()
@@ -91,20 +100,23 @@ def kebab(
 ) -> None:
     """Format the filename to kebab case convention."""
 
-    paths = get_cwd_file_paths()
+    current_file_paths = get_cwd_file_paths()
+    current_filenames = []
+    new_filenames = []
 
-    for path in paths:
+    for path in current_file_paths:
         name = path.stem
         extension = path.suffix
 
         if not name:
             continue
 
-        name = name.upper() if upper else name.lower()
-        name = re.sub("[^0-9a-zA-Z]+", "-", name)
-        filename = f"{name}{extension}"
+        new_name = name.upper() if upper else name.lower()
+        new_name = re.sub("[^0-9a-zA-Z]+", "-", new_name)
+        new_filenames.append(f"{new_name}{extension}")
+        current_filenames.append(f"{name}{extension}")
 
-        rename_file(path, filename)
+    confirm_changes(current_filenames, new_filenames)
 
 
 @app.command()
@@ -115,42 +127,48 @@ def pascal(
 ) -> None:
     """Format the filename to pascal case convention."""
 
-    paths = get_cwd_file_paths()
+    current_file_paths = get_cwd_file_paths()
+    current_filenames = []
+    new_filenames = []
 
-    for path in paths:
+    for path in current_file_paths:
         name = path.stem
         extension = path.suffix
 
         if not name:
             continue
 
-        name = name.title()
+        new_name = name.title()
 
         if not whitespace:
-            name = name.replace(" ", "")
+            new_name = re.sub("[^0-9a-zA-Z]+", "", new_name)
 
-        filename = f"{name}{extension}"
+        new_filenames.append(f"{new_name}{extension}")
+        current_filenames.append(f"{name}{extension}")
 
-        rename_file(path, filename)
+    confirm_changes(current_filenames, new_filenames)
 
 
 @app.command()
 def upper() -> None:
     """Set the filename to uppercase."""
 
-    paths = get_cwd_file_paths()
+    current_file_paths = get_cwd_file_paths()
+    current_filenames = []
+    new_filenames = []
 
-    for path in paths:
+    for path in current_file_paths:
         name = path.stem
         extension = path.suffix
 
         if not name:
             continue
 
-        name = name.upper()
-        filename = f"{name}{extension}"
+        new_name = name.upper()
+        new_filenames.append(f"{new_name}{extension}")
+        current_filenames.append(f"{name}{extension}")
 
-        rename_file(path, filename)
+    confirm_changes(current_filenames, new_filenames)
 
 
 @app.command()
@@ -161,17 +179,20 @@ def snake(
 ) -> None:
     """Format the filename to snake case convention."""
 
-    paths = get_cwd_file_paths()
+    current_file_paths = get_cwd_file_paths()
+    current_filenames = []
+    new_filenames = []
 
-    for path in paths:
+    for path in current_file_paths:
         name = path.stem
         extension = path.suffix
 
         if not name:
             continue
 
-        name = name.upper() if upper else name.lower()
-        name = re.sub("[^0-9a-zA-Z]+", "_", name)
-        filename = f"{name}{extension}"
+        new_name = name.upper() if upper else name.lower()
+        new_name = re.sub("[^0-9a-zA-Z]+", "_", new_name)
+        new_filenames.append(f"{new_name}{extension}")
+        current_filenames.append(f"{name}{extension}")
 
-        rename_file(path, filename)
+    confirm_changes(current_filenames, new_filenames)
