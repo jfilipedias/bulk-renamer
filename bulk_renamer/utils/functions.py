@@ -59,3 +59,5 @@ def confirm_changes(old_filenames: list[str], new_filenames: list[str]) -> None:
 
     if confirm("Are you sure you want to rename these files?", default=True):
         rename_files(old_filenames, new_filenames)
+
+    echo("Don't worry, no changes have been made.")
