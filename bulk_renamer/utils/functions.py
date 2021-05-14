@@ -44,9 +44,9 @@ def show_changes(old_filenames: list[str], new_filenames: list[str]) -> None:
     table = Table()
     table.box = box.SIMPLE_HEAD
 
-    table.add_column("Current Names", header_style="bold cyan", style="cyan")
+    table.add_column("Current Filenames", header_style="bold cyan", style="cyan")
     table.add_column("")
-    table.add_column("New Names", header_style="bold green", style="green")
+    table.add_column("New Filenames", header_style="bold green", style="green")
 
     arrows = [name.replace(name, "->") for name in old_filenames]
     table.add_row("\n".join(old_filenames), "\n".join(arrows), "\n".join(new_filenames))
