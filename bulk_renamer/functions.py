@@ -1,4 +1,3 @@
-from __future__ import annotations
 from pathlib import Path
 from os import path
 from random import randint
