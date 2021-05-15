@@ -7,7 +7,7 @@ license = "MIT"
 readme = "README.md"
 
 [tool.poetry.scripts]
-br = "bulk_renamer.cli.main:app"
+br = "bulk_renamer.main:app"
 
 [tool.poetry.dependencies]
 python = "^3.8"
