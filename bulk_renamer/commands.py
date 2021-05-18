@@ -1,6 +1,6 @@
 import typer
 
-from bulk_renamer.functions import get_cwd_file_paths, confirm_changes
+from bulk_renamer.functions import confirm_changes, get_cwd_file_paths, get_value_input
 
 app = typer.Typer()
 
@@ -147,13 +147,13 @@ def pascal(
 
 @app.command()
 def prefix(
-    value: str = typer.Argument(
-        ..., help="The string to be added to the beginning of the filename."
+    value: str = typer.Option(
+        "", help="The string to be added to the beginning of the filename."
     )
 ) -> None:
     "Adds a string to the beginning of the filename."
 
-    add_string_to_filename(value, is_suffix=False)
+    add_affix_to_filename(value)
 
 
 @app.command()
@@ -165,6 +165,9 @@ def remove(
     current_file_paths = get_cwd_file_paths()
     current_filenames = []
     new_filenames = []
+
+    if not value:
+        value = get_value_input("What's the string you want to remove: ")[0]
 
     for path in current_file_paths:
         name = path.stem
@@ -182,12 +185,23 @@ def remove(
 
 @app.command()
 def replace(
-    old_value: str = typer.Argument(..., help="The string to shearch for."),
-    new_value: str = typer.Argument(
-        ..., help="The string to replace the old value with."
-    ),
+    old_value: str = typer.Option("", help="The string to shearch for."),
+    new_value: str = typer.Option("", help="The string to replace the old value with."),
 ) -> None:
     """Replaces a specified string in the filename with another specified string."""
+
+    if not old_value and not new_value:
+        new_value, old_value = get_value_input(
+            new_value_message="What's the new value you want to put:",
+            old_value_message="What's the old value you want to replace:",
+        )
+    elif not old_value:
+        old_value = get_value_input(
+            new_value_message="",
+            old_value_message="What's the string you want to remove:",
+        )[1]
+    elif not new_value:
+        new_value = get_value_input("What's the string you want to put:")[0]
 
     current_file_paths = get_cwd_file_paths()
     current_filenames = []
@@ -237,13 +251,13 @@ def snake(
 
 @app.command()
 def suffix(
-    value: str = typer.Argument(
-        ..., help="The string to be added to the ending of the filename."
+    value: str = typer.Option(
+        "", help="The string to be added to the ending of the filename."
     )
 ) -> None:
     "Adds a string to the ending of the filename."
 
-    add_string_to_filename(value)
+    add_affix_to_filename(value, is_prefix=False)
 
 
 @app.command()
@@ -268,8 +282,12 @@ def upper() -> None:
     confirm_changes(current_filenames, new_filenames)
 
 
-def add_string_to_filename(value: str, is_suffix: bool = True) -> None:
-    """Adds a prefix or a suffix to a filename."""
+def add_affix_to_filename(value: str = "", is_prefix: bool = True) -> None:
+    """Adds a affix to a filename."""
+
+    if not value:
+        affix = "prefix" if is_prefix else "suffix"
+        value = get_value_input(f"What's the {affix} you want to add:")[0]
 
     current_file_paths = get_cwd_file_paths()
     current_filenames = []
@@ -282,7 +300,7 @@ def add_string_to_filename(value: str, is_suffix: bool = True) -> None:
         if not name:
             continue
 
-        new_name = f"{name}{value}" if is_suffix else f"{value}{name}"
+        new_name = f"{value}{name}" if is_prefix else f"{name}{value}"
         new_filenames.append(f"{new_name}{extension}")
         current_filenames.append(f"{name}{extension}")
 
