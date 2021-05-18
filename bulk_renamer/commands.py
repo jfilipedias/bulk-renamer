@@ -1,8 +1,10 @@
 import typer
+from rich.console import Console
 
 from bulk_renamer.functions import confirm_changes, get_cwd_file_paths, get_value_input
 
 app = typer.Typer()
+console = Console()
 
 
 @app.command()
@@ -167,20 +169,23 @@ def remove(
     new_filenames = []
 
     if not value:
-        value = get_value_input("What's the string you want to remove: ")[0]
+        value = get_value_input("What's the string you want to remove?")[0]
 
     for path in current_file_paths:
         name = path.stem
         extension = path.suffix
 
-        if not name:
+        if not name or value not in name:
             continue
 
         new_name = name.replace(value, "")
         new_filenames.append(f"{new_name}{extension}")
         current_filenames.append(f"{name}{extension}")
 
-    confirm_changes(current_filenames, new_filenames)
+    if not current_filenames:
+        console.print(f"The value [cyan]{value}[/] wasn't found.")
+    else:
+        confirm_changes(current_filenames, new_filenames)
 
 
 @app.command()
@@ -192,16 +197,16 @@ def replace(
 
     if not old_value and not new_value:
         new_value, old_value = get_value_input(
-            new_value_message="What's the new value you want to put:",
-            old_value_message="What's the old value you want to replace:",
+            new_value_message="What's the new value you want to put?",
+            old_value_message="What's the old value you want to replace?",
         )
     elif not old_value:
         old_value = get_value_input(
             new_value_message="",
-            old_value_message="What's the string you want to remove:",
+            old_value_message="What's the string you want to remove?",
         )[1]
     elif not new_value:
-        new_value = get_value_input("What's the string you want to put:")[0]
+        new_value = get_value_input("What's the string you want to put?")[0]
 
     current_file_paths = get_cwd_file_paths()
     current_filenames = []
@@ -211,14 +216,17 @@ def replace(
         name = path.stem
         extension = path.suffix
 
-        if not name:
+        if not name or old_value not in name:
             continue
 
         new_name = name.replace(old_value, new_value)
         new_filenames.append(f"{new_name}{extension}")
         current_filenames.append(f"{name}{extension}")
 
-    confirm_changes(current_filenames, new_filenames)
+    if not current_filenames:
+        console.print(f"The value [cyan]{old_value}[/] wasn't found.")
+    else:
+        confirm_changes(current_filenames, new_filenames)
 
 
 @app.command()
@@ -242,7 +250,6 @@ def snake(
 
         new_name = name.upper() if upper else name.lower()
         new_name = new_name.replace(" ", "_")
-        new_name = new_name.replace("-", "_")
         new_filenames.append(f"{new_name}{extension}")
         current_filenames.append(f"{name}{extension}")
 
@@ -287,7 +294,7 @@ def add_affix_to_filename(value: str = "", is_prefix: bool = True) -> None:
 
     if not value:
         affix = "prefix" if is_prefix else "suffix"
-        value = get_value_input(f"What's the {affix} you want to add:")[0]
+        value = get_value_input(f"What's the {affix} you want to add?")[0]
 
     current_file_paths = get_cwd_file_paths()
     current_filenames = []

@@ -2,14 +2,11 @@ from __future__ import annotations
 from pathlib import Path
 from os import path
 from random import randint
-from time import sleep
 
-from InquirerPy import inquirer
 from rich import box
 from rich.console import Console
 from rich.table import Table
-
-import bulk_renamer.constants as constants
+from typer import confirm, echo, prompt
 
 
 console = Console()
@@ -30,21 +27,8 @@ def get_value_input(
 ) -> tuple(str, str):
     """Get the args values from the user input."""
 
-    old_value = (
-        inquirer.text(
-            message=old_value_message, style=constants.STYLE, qmark=""
-        ).execute()
-        if old_value_message
-        else None
-    )
-
-    new_value = (
-        inquirer.text(
-            message=new_value_message, style=constants.STYLE, qmark=""
-        ).execute()
-        if new_value_message
-        else None
-    )
+    old_value = prompt(old_value_message) if old_value_message else None
+    new_value = prompt(new_value_message) if new_value_message else None
 
     return (new_value, old_value)
 
@@ -84,16 +68,11 @@ def show_changes(old_filenames: list[str], new_filenames: list[str]) -> None:
 
 
 def confirm_changes(old_filenames: list[str], new_filenames: list[str]) -> None:
+    """Show the changes and ask the user to confirm the changes."""
+
     show_changes(old_filenames, new_filenames)
 
-    confirm = inquirer.confirm(
-        message="Are you sure you want to rename these files?",
-        style=constants.STYLE,
-        default=True,
-        qmark="",
-    ).execute()
-
-    if confirm:
+    if confirm("Are you sure you want to rename these files?", default=True):
         rename_files(old_filenames, new_filenames)
     else:
-        console.print("Don't worry, no changes have been made.")
+        echo("Don't worry, no changes have been made.")
