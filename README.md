@@ -1,4 +1,4 @@
-# `bulk-renamer`
+# bulk-renamer
 
 Bulk Renamer is a CLI to help you to easily rename a
 list of files. You just need to run the commands from the folder that contains
@@ -18,112 +18,40 @@ $ br [OPTIONS] COMMAND [ARGS]...
 
 **Commands**:
 
-* `add`: Adds a string in the name case based on the...
-* `case`: Formats filename chars case based on the...
-* `remove`: Remove a specified string from the filename.
-* `replace`: Replaces a specified string in the filename...
-
-## `br add`
-
-Adds a string in the name case based on the subcommands.
-
-**Usage**:
-
-```console
-$ br add [OPTIONS] COMMAND [ARGS]...
-```
-
-**Options**:
-
-* `--help`: Show this message and exit.
-
-**Commands**:
-
-* `prefix`: Adds a string to the beginning of the...
-* `suffix`: Adds a string to the ending of the filename.
-
-### `br add prefix`
-
-Adds a string to the beginning of the filename.
-
-**Usage**:
-
-```console
-$ br add prefix [OPTIONS] VALUE
-```
-
-**Arguments**:
-
-* `VALUE`: The string to be added to the beginning of the filename.  [required]
-
-**Options**:
-
-* `--help`: Show this message and exit.
-
-### `br add suffix`
-
-Adds a string to the ending of the filename.
-
-**Usage**:
-
-```console
-$ br add suffix [OPTIONS] VALUE
-```
-
-**Arguments**:
-
-* `VALUE`: The string to be added to the ending of the filename.  [required]
-
-**Options**:
-
-* `--help`: Show this message and exit.
-
-## `br case`
-
-Formats filename chars case based on the subcommands.
-
-**Usage**:
-
-```console
-$ br case [OPTIONS] COMMAND [ARGS]...
-```
-
-**Options**:
-
-* `--help`: Show this message and exit.
-
-**Commands**:
-
-* `alternate`: Alternate the name characters between upper...
+* `alternate`: Alternate the name characters between upper and lowercase.
 * `camel`: Format the filename to camel case convention.
 * `kebab`: Format the filename to kebab case convention.
 * `lower`: Set the filename to lowercase.
-* `pascal`: Format the filename to pascal case...
+* `pascal`: Format the filename to pascal case convention.
+* `prefix`: Adds a string to the beginning of the filename.
+* `remove`: Remove a specified string from the filename.
+* `replace`: Replaces a specified string in the filename with another specified string.
 * `snake`: Format the filename to snake case convention.
+* `suffix`: Adds a string to the ending of the filename.
 * `upper`: Set the filename to uppercase.
 
-### `br case alternate`
+## `br alternate`
 
 Alternate the name characters between upper and lowercase.
 
 **Usage**:
 
 ```console
-$ br case alternate [OPTIONS]
+$ br alternate [OPTIONS]
 ```
 
 **Options**:
 
 * `--help`: Show this message and exit.
 
-### `br case camel`
+## `br camel`
 
 Format the filename to camel case convention.
 
 **Usage**:
 
 ```console
-$ br case camel [OPTIONS]
+$ br camel [OPTIONS]
 ```
 
 **Options**:
@@ -131,14 +59,14 @@ $ br case camel [OPTIONS]
 * `-w, --whitespace`: Maintains the filename whitespaces.  [default: False]
 * `--help`: Show this message and exit.
 
-### `br case kebab`
+## `br kebab`
 
 Format the filename to kebab case convention.
 
 **Usage**:
 
 ```console
-$ br case kebab [OPTIONS]
+$ br kebab [OPTIONS]
 ```
 
 **Options**:
@@ -146,28 +74,28 @@ $ br case kebab [OPTIONS]
 * `-u, --upper`: Set all characters to uppercase.  [default: False]
 * `--help`: Show this message and exit.
 
-### `br case lower`
+## `br lower`
 
 Set the filename to lowercase.
 
 **Usage**:
 
 ```console
-$ br case lower [OPTIONS]
+$ br lower [OPTIONS]
 ```
 
 **Options**:
 
 * `--help`: Show this message and exit.
 
-### `br case pascal`
+## `br pascal`
 
 Format the filename to pascal case convention.
 
 **Usage**:
 
 ```console
-$ br case pascal [OPTIONS]
+$ br pascal [OPTIONS]
 ```
 
 **Options**:
@@ -175,33 +103,19 @@ $ br case pascal [OPTIONS]
 * `-w, --whitespace`: Maintains the filename whitespaces.  [default: False]
 * `--help`: Show this message and exit.
 
-### `br case snake`
+## `br prefix`
 
-Format the filename to snake case convention.
-
-**Usage**:
-
-```console
-$ br case snake [OPTIONS]
-```
-
-**Options**:
-
-* `-u, --upper`: Set all characters to uppercase.  [default: False]
-* `--help`: Show this message and exit.
-
-### `br case upper`
-
-Set the filename to uppercase.
+Adds a string to the beginning of the filename.
 
 **Usage**:
 
 ```console
-$ br case upper [OPTIONS]
+$ br prefix [OPTIONS]
 ```
 
 **Options**:
 
+* `--value TEXT`: The string to be added to the beginning of the filename.  [default: ]
 * `--help`: Show this message and exit.
 
 ## `br remove`
@@ -229,13 +143,54 @@ Replaces a specified string in the filename with another specified string.
 **Usage**:
 
 ```console
-$ br replace [OPTIONS] OLD_VALUE NEW_VALUE
+$ br replace [OPTIONS]
 ```
 
-**Arguments**:
+**Options**:
 
-* `OLD_VALUE`: The string to shearch for.  [required]
-* `NEW_VALUE`: The string to replace the old value with.  [required]
+* `--old-value TEXT`: The string to shearch for.  [default: ]
+* `--new-value TEXT`: The string to replace the old value with.  [default: ]
+* `--help`: Show this message and exit.
+
+## `br snake`
+
+Format the filename to snake case convention.
+
+**Usage**:
+
+```console
+$ br snake [OPTIONS]
+```
+
+**Options**:
+
+* `-u, --upper`: Set all characters to uppercase.  [default: False]
+* `--help`: Show this message and exit.
+
+## `br suffix`
+
+Adds a string to the ending of the filename.
+
+**Usage**:
+
+```console
+$ br suffix [OPTIONS]
+```
+
+**Options**:
+
+* `--value TEXT`: The string to be added to the ending of the filename.  [default: ]
+* `--help`: Show this message and exit.
+
+## `br upper`
+
+Set the filename to uppercase.
+
+**Usage**:
+
+```console
+$ br upper [OPTIONS]
+```
 
 **Options**:
 
